@@ -38,8 +38,7 @@ class FileCollector
         FileList $fileList,
         array $includeNameList = null,
         $patternForExclude = null
-    )
-    {
+    ) {
         $this->finder = $finder;
         $this->fileList = $fileList;
 

@@ -88,6 +88,5 @@ class CheckDependency extends AbstractMagentoCommand
      */
     private function getVersionPreferenceFile(InputInterface $input)
     {
-
     }
 }
