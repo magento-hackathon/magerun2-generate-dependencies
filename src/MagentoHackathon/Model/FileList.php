@@ -5,6 +5,9 @@ namespace MagentoHackathon\Model;
 
 use Symfony\Component\Finder\SplFileInfo;
 
+/**
+ * Model for different file type list.
+ */
 class FileList
 {
     /**
@@ -18,6 +21,11 @@ class FileList
     private $phpFileList = [];
 
     /**
+     * @var array
+     */
+    private $xmlFileList = [];
+
+    /**
      * @var string
      */
     private $composerFile = '';
@@ -28,16 +36,20 @@ class FileList
     public function addEntry(SplFileInfo $file)
     {
         switch ($file->getExtension()) {
-            case '.php':
+            case 'php':
                 $this->phpFileList[] = $file;
                 break;
 
-            case '.json':
+            case 'json':
                 $this->composerFile = $file;
                 break;
 
+            case 'xml':
+                $this->xmlFileList[] = $file;
+                break;
+
             default:
-                $this->templates = $file;
+                $this->templates[] = $file;
                 break;
         }
     }
@@ -61,8 +73,16 @@ class FileList
     /**
      * @return SplFileInfo[] | array
      */
-    public function getTemplates(array $templates): array
+    public function getTemplates(): array
     {
         return $this->templates;
+    }
+
+    /**
+     * @return SplFileInfo[] | array
+     */
+    public function getXmlFileList(): array
+    {
+        return $this->xmlFileList;
     }
 }

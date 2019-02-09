@@ -4,6 +4,7 @@
 namespace MagentoHackathon\Service;
 
 use MagentoHackathon\FileCollector;
+use MagentoHackathon\Model\FileList;
 use PHPUnit\Framework\TestCase;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
@@ -33,9 +34,12 @@ class FileCollectorTest extends TestCase
         $file4->at($this->root);
         $file5 = vfsStream::newFile('composer.json');
         $file5->at($this->root);
+        $file6 = vfsStream::newFile('test.phtml');
+        $file6->at($this->root);
 
         $result = $this->fileCollector->getRelevantFiles($this->root->url());
-        $this->assertCount(4, $result);
+        $this->assertCount(2, $result->getPhpFileList());
+        $this->assertCount(1, $result->getTemplates());
     }
 
     /**
@@ -45,6 +49,7 @@ class FileCollectorTest extends TestCase
     {
         $this->root = vfsStream::setup();
         $finder = new Finder();
-        $this->fileCollector = new FileCollector($finder);
+        $fileList = new FileList();
+        $this->fileCollector = new FileCollector($finder, $fileList);
     }
 }

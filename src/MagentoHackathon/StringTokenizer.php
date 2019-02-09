@@ -12,12 +12,11 @@ class StringTokenizer implements TokenizerInterface
     /**
      * @param string $filename
      * @return string[]
-     * @throws \Exception
      */
     public function execute(string $filePath): array
     {
         if (!file_exists($filePath)) {
-            throw new \Exception(sprintf('File %s not found or readable.', $filePath));
+            return [];
         }
 
         $content = file_get_contents($filePath);

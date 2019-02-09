@@ -2,6 +2,7 @@
 
 namespace MagentoHackathon;
 
+use MagentoHackathon\Model\FileList;
 use Symfony\Component\Finder\Finder;
 
 class FileCollector
@@ -21,14 +22,23 @@ class FileCollector
      * @var Finder
      */
     private $finder;
+    /**
+     * @var FileList
+     */
+    private $fileList;
 
     /**
      * @param Finder $finder
+     * @param FileList $fileList
      * @param array|null $includeNameList
      * @param array|null $patternForExclude
      */
-    public function __construct(Finder $finder, array $includeNameList = null, $patternForExclude = null)
-    {
+    public function __construct(
+        Finder $finder,
+        FileList $fileList,
+        array $includeNameList = null,
+        $patternForExclude = null
+    ) {
         $this->finder = $finder;
 
         if ($includeNameList !== null) {
@@ -38,14 +48,15 @@ class FileCollector
         if ($patternForExclude !== null) {
             $this->patternForExclude = $patternForExclude;
         }
+        $this->fileList = $fileList;
     }
 
     /**
      * Return Files that are relevant for decency's.
      * @param string $folder
-     * @return array
+     * @return FileList
      */
-    public function getRelevantFiles(string $folder): array
+    public function getRelevantFiles(string $folder): FileList
     {
         // build the finder and file types for include
         $finder = $this->finder;
@@ -60,11 +71,10 @@ class FileCollector
             $finder->notName($notName);
         }
 
-        $files = [];
         foreach ($finder->getIterator() as $file) {
-            $files[] = $file->getRealPath();
+            $this->fileList->addEntry($file);
         }
 
-        return $files;
+        return $this->fileList;
     }
 }
