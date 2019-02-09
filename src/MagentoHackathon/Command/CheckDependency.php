@@ -53,13 +53,10 @@ class CheckDependency extends AbstractMagentoCommand
     {
         $this->detectMagento($output);
         if ($this->initMagento($output)) {
-
             $extensionName = $this->getExtensionFolderName($input, $output);
             if ($extensionName === false) {
                 return;
             }
-
-
         }
     }
 
