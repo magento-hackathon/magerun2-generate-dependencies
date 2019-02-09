@@ -2,20 +2,22 @@
 
 namespace MagentoHackathon\Service;
 
+use MagentoHackathon\Api\TokenizerInterface;
 use MagentoHackathon\StringTokenizer;
 
 class ScanForPhpExtensions
 {
+    const EXT = 'ext-';
 
     /**
      * @var array|null
      */
-    private $phpCheckExtensions = ['json', 'xml', 'pcre', 'gd', 'bcmath'];
+    private $phpCheckExtensions;
 
     /**
      * @var arrayﬂ
      */
-    private $registeredPhpExtensions = [];
+    private $registeredExtensions;
     /**
      * @var StringTokenizer
      */
@@ -23,21 +25,23 @@ class ScanForPhpExtensions
 
     /**
      * ScanForPhpExtensions constructor.
-     * @param StringTokenizer $tokenizer
+     * @param TokenizerInterface $tokenizer
      * @param array $registeredPhpExtensions
      * @param null $phpCheckExtensions
      */
     public function __construct(
-        StringTokenizer $tokenizer,
-        $registeredPhpExtensions = [],
+        TokenizerInterface $tokenizer,
+        $registeredExtensions = [],
         $phpCheckExtensions = null
     ) {
         $this->tokenizer = $tokenizer;
-        $this->registeredPhpExtensions = $registeredPhpExtensions;
+        $this->registeredExtensions = $registeredExtensions;
 
-        if ($phpCheckExtensions !== null) {
-            $this->phpExtensions = $phpCheckExtensions;
+        if ($phpCheckExtensions === null) {
+            $phpCheckExtensions = ['json', 'xml', 'pcre', 'gd', 'bcmath'];
         }
+
+        $this->phpCheckExtensions = $phpCheckExtensions;
     }
 
     /**
@@ -48,9 +52,10 @@ class ScanForPhpExtensions
     {
         $results = [];
         $tokens = $this->getTokensByClassesPathList($classesPathList);
+        $registeredPhpExtensions = $this->getRegisteredPhpExtensions();
 
         foreach ($this->phpCheckExtensions as $phpExtension) {
-            if (array_key_exists($phpExtension, $this->registeredPhpExtensions)) {
+            if (array_key_exists($phpExtension, $registeredPhpExtensions)) {
                 continue;
             }
 
@@ -83,5 +88,24 @@ class ScanForPhpExtensions
         }
 
         return array_unique(array_merge(...$stringTokens));
+    }
+
+    /**
+     * @return array
+     */
+    private function getRegisteredPhpExtensions(): array
+    {
+        $registeredPhpExtensions = [];
+
+        foreach ($this->registeredExtensions as $registeredExtension => $value) {
+            if (strpos(substr($registeredExtension, 0, 4), self::EXT) === false) {
+                continue;
+            }
+
+            $registeredExtension = str_replace(self::EXT, '', $registeredExtension);
+            $registeredPhpExtensions[$registeredExtension] = '';
+        }
+
+        return $registeredPhpExtensions;
     }
 }

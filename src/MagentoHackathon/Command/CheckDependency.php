@@ -7,6 +7,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * @codeCoverageIgnore
+ */
 class CheckDependency extends AbstractMagentoCommand
 {
     const COMMAND_NAME = 'generate:dependencies';
@@ -78,5 +81,13 @@ class CheckDependency extends AbstractMagentoCommand
         $output->writeln('<info>Find extension by folder name : </info><comment>' . $extensionName . '</comment></info>');
 
         return $extensionName;
+    }
+
+    /**
+     *
+     */
+    private function getVersionPreferenceFile(InputInterface $input)
+    {
+
     }
 }

@@ -10,8 +10,7 @@ use MagentoHackathon\Api\TokenizerInterface;
 class StringTokenizer implements TokenizerInterface
 {
     /**
-     * @param string $filename
-     * @return string[]
+     * @inheritDoc
      */
     public function execute(string $filePath): array
     {

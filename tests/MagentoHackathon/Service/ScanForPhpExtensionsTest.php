@@ -2,12 +2,10 @@
 
 namespace MagentoHackathon\Service;
 
-use MagentoHackathon\Model\FileList;
 use MagentoHackathon\StringTokenizer;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Finder\Finder;
 
 class ScanForPhpExtensionsTest extends TestCase
 {
@@ -30,6 +28,8 @@ class ScanForPhpExtensionsTest extends TestCase
         <?php 
         $int = 12;
         echo json_encode($test = ["", "test"]);
+
+        echo bcadd(5.122, 21);   
         ';
 
         $file2 = vfsStream::newFile('test2.php');
@@ -50,8 +50,12 @@ class ScanForPhpExtensionsTest extends TestCase
     protected function setUp()
     {
         $this->root = vfsStream::setup();
-        $finder = new Finder();
-        $fileList = new FileList();
-        $this->scanForPhpExtensions = new ScanForPhpExtensions(new StringTokenizer());
+        $registered =
+            [
+                'ext-bcmath' => '*',
+                'magento/module-cookie' => '122'
+            ];
+
+        $this->scanForPhpExtensions = new ScanForPhpExtensions(new StringTokenizer(), $registered);
     }
 }

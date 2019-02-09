@@ -11,12 +11,12 @@ class FileCollector
     /**
      * @var array
      */
-    private $includeNameList = ['*.php', 'composer.json', '*.xml', '*.phtml'];
+    private $includeNameList = [];
 
     /**
      * @var array
      */
-    private $patternForExclude = ['*Test.php'];
+    private $patternForExclude = [];
 
     /**
      * @var Finder
@@ -38,17 +38,20 @@ class FileCollector
         FileList $fileList,
         array $includeNameList = null,
         $patternForExclude = null
-    ) {
+    )
+    {
         $this->finder = $finder;
-
-        if ($includeNameList !== null) {
-            $this->includeNameList = $includeNameList;
-        }
-
-        if ($patternForExclude !== null) {
-            $this->patternForExclude = $patternForExclude;
-        }
         $this->fileList = $fileList;
+
+        if ($includeNameList === null) {
+            $includeNameList = ['*.php', 'composer.json', '*.xml', '*.phtml'];
+        }
+        $this->includeNameList = $includeNameList;
+
+        if ($patternForExclude === null) {
+            $patternForExclude = ['*Test.php'];
+        }
+        $this->patternForExclude = $patternForExclude;
     }
 
     /**
