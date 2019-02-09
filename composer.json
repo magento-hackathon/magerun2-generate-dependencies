@@ -1,0 +1,36 @@
+{
+  "name": "magento-hackathon/magerun2-generate-dependencies",
+  "type": "library",
+  "description": "Command to generated the M2 module dependencies for N98MageRun2",
+  "keywords": ["magerun"],
+  "homepage": "https://github.com/magento-hackathon/magerun2-generate-dependencies",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Lars Roettig",
+      "email": "l.roettig@techdivision.com"
+    }
+  ],
+  "require": {
+    "php": "^7.0.0"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-master",
+    "mikey179/vfsStream": "*",
+    "phpunit/phpunit": "^6.0",
+    "n98/magerun2-test-framework": "dev-master",
+    "phpro/grumphp": "*",
+    "friendsofphp/php-cs-fixer": "^2.11",
+    "jakub-onderka/php-parallel-lint": "^1.0",
+    "phpstan/phpstan": "^0.9.2",
+    "phpmd/phpmd": "*"
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit"
+  },
+  "autoload": {
+    "psr-4": {
+      "MagentoHackathon\\": "src/MagentoHackathon"
+    }
+  }
+}
