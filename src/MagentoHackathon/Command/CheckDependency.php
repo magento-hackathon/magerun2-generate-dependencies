@@ -2,6 +2,12 @@
 
 namespace MagentoHackathon\Command;
 
+use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\Filesystem;
+use MagentoHackathon\Api\GetModulePathFolderByNameInterface;
+use MagentoHackathon\FileCollector;
+use MagentoHackathon\Service\CheckDependency as CheckDependencyService;
+use MagentoHackathon\Service\GetModuleFolderByName;
 use N98\Magento\Command\AbstractMagentoCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -29,6 +35,34 @@ class CheckDependency extends AbstractMagentoCommand
     "(If not set the version will be generated against magento 2.2 and 2.3 \n" .
     "e.g  \"magento/module-customer\": \"^101.0.0|^102.0.0\")";
 
+    /**
+     * @var CheckDependencyService
+     */
+    private $checkDependency;
+    /**
+     * @var GetModulePathFolderByNameInterface|GetModuleFolderByName
+     */
+    private $folderByName;
+
+    /**
+     * @var FileCollector
+     */
+    private $fileCollector;
+
+    /**
+     * @param CheckDependencyService $checkDependency
+     * @param GetModuleFolderByName $folderByName
+     */
+    public function inject(
+        CheckDependencyService $checkDependency,
+        GetModuleFolderByName $folderByName,
+        FileCollector $fileCollector
+    ) {
+        $this->checkDependency = $checkDependency;
+        $this->folderByName = $folderByName;
+        $this->fileCollector = $fileCollector;
+    }
+
     protected function configure()
     {
         $this->setName('extension:generate:dependencies')
@@ -48,19 +82,31 @@ class CheckDependency extends AbstractMagentoCommand
     }
 
     /**
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param InputInterface $input
+     * @param OutputInterface $output
      * @return int|void
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
+    protected function execute(
+        InputInterface $input,
+        OutputInterface $output
+    ) {
         $this->detectMagento($output);
         if ($this->initMagento($output)) {
-            $extensionName = $this->getExtensionFolderName($input, $output);
-            if ($extensionName === false) {
+            $moduleName = $this->getExtensionFolderName($input, $output);
+            if ($moduleName === false) {
                 return;
             }
+
+            $modulePath = $this->folderByName->execute($moduleName);
+            if ($modulePath === null) {
+                $output->writeln('<info>Please provide a valid module  name. </info>');
+                return;
+            }
+
+            $relevantFiles = $this->fileCollector->getRelevantFiles($modulePath);
+            $dependencyList = $this->checkDependency->execute($relevantFiles);
         }
+        return $output;
     }
 
     /**
@@ -68,8 +114,10 @@ class CheckDependency extends AbstractMagentoCommand
      * @param OutputInterface $output
      * @return bool|string
      */
-    private function getExtensionFolderName(InputInterface $input, OutputInterface $output)
-    {
+    private function getExtensionFolderName(
+        InputInterface $input,
+        OutputInterface $output
+    ) {
         $extensionName = $input->getOption(self::OPTION_EXT_DIR);
 
         if (empty($extensionName)) {
@@ -81,12 +129,5 @@ class CheckDependency extends AbstractMagentoCommand
         $output->writeln('<info>Find extension by folder name : </info><comment>' . $extensionName . '</comment></info>');
 
         return $extensionName;
-    }
-
-    /**
-     *
-     */
-    private function getVersionPreferenceFile(InputInterface $input)
-    {
     }
 }
