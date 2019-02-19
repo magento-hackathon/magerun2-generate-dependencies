@@ -2,8 +2,7 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/magento-hackathon/magerun2-generate-dependencies/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/magento-hackathon/magerun2-generate-dependencies/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/magento-hackathon/magerun2-generate-dependencies/badges/build.png?b=master)](https://scrutinizer-ci.com/g/magento-hackathon/magerun2-generate-dependencies/build-status/master)
 
-
-### <p style="color: #347E5E">Work in Process </p>
+<h2 style="color: #347E5E"> Work in Process !!!</h2>
 
 # Local Setup
 ```bash
