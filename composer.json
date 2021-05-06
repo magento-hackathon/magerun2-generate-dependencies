@@ -12,11 +12,12 @@
     }
   ],
   "require": {
-    "php": "^7.0.0"
+    "php": "~5.6 | ^7.3",
+    "composer/composer": "^1.9 || ^2.0"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master",
-    "mikey179/vfsStream": "*",
+    "mikey179/vfsstream": "*",
     "phpunit/phpunit": "^6.0",
     "n98/magerun2-test-framework": "dev-master",
     "phpro/grumphp": "*",
