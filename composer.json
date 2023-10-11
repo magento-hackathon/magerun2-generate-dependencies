@@ -12,19 +12,19 @@
     }
   ],
   "require": {
-    "php": "~5.6 | >= 7.3",
-    "composer/composer": "^1.10 || ^2.2"
+    "php": ">= 7.3",
+    "composer/composer": "^2"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master",
-    "mikey179/vfsstream": "*",
-    "phpunit/phpunit": "^6.0",
+    "mikey179/vfsstream": "^1.6",
+    "phpunit/phpunit": "^9.6",
     "n98/magerun2-test-framework": "dev-master",
-    "phpro/grumphp": "*",
+    "phpro/grumphp": "^1.5",
     "friendsofphp/php-cs-fixer": "^2.11",
     "jakub-onderka/php-parallel-lint": "^1.0",
-    "phpstan/phpstan": "^0.9.2",
-    "phpmd/phpmd": "*",
+    "phpstan/phpstan": "^1.10",
+    "phpmd/phpmd": "^2.12",
     "squizlabs/php_codesniffer": "^3.4"
   },
   "scripts": {
