@@ -13,7 +13,7 @@
   ],
   "require": {
     "php": ">= 7.3",
-    "composer/composer": "^2"
+    "composer/composer": "^2.7"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master",
