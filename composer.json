@@ -14,12 +14,12 @@
   "require": {
     "php": ">= 7.3",
     "composer/composer": "^2.7",
-    "symfony/process": ">=5.4.46"
+    "symfony/process": "^5.4"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master",
     "mikey179/vfsstream": "^1.6",
-    "phpunit/phpunit": "^9.6",
+    "phpunit/phpunit": "^13.0",
     "n98/magerun2-test-framework": "dev-master",
     "phpro/grumphp": "^1.5",
     "friendsofphp/php-cs-fixer": "^2.11",
